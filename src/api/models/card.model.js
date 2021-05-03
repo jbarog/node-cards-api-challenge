@@ -80,19 +80,59 @@ const cardSchema = new mongoose.Schema({
 // /**
 //  * Index
 //  */
-// cardSchema.index({name: 1,img: 1,rarity: 1}, { unique: true });
+cardSchema.virtual('stats').get(() => (this.subscriptions ? this.subscriptions.reduce((stats, subscriber) => {
+  const key = subscriber.subscriber;
+  const isUsed = subscriber.useDate;
+  const newStats = { ...stats };
+  if (!newStats[key]) {
+    newStats[key] = {
+      subscribed: 0,
+      used: 0,
+    };
+  }
+  newStats[key] = {
+    subscribed: newStats[key].subscribed + 1,
+    used: newStats[key].used + (isUsed ? 1 : 0),
+  };
+  return newStats;
+}, {}) : {}));
 
 /**
  * Methods
  */
 cardSchema.method({
-  parseFields() {
+  parseFields(userId) {
     const parsed = {};
-    const fields = ['id', 'name', 'imagePath', 'status', 'rarity', 'limit', 'owner', 'createdAt', 'subscriptions'];
+    const isOwner = userId === this.owner.id;
 
+    const fields = [
+      'id',
+      'name',
+      'imagePath',
+      'status',
+      'rarity',
+      'limit',
+      'owner',
+      'createdAt',
+      'stats',
+      ...(isOwner ? ['subscriptions'] : []),
+    ];
     fields.forEach((field) => {
       parsed[field] = this[field];
     });
+    if (isOwner) {
+      const users = Object.keys(parsed.stats);
+      console.log('parsed.stats', parsed.stats, userId, isOwner, this.owner.id);
+      parsed.stats = users && users.reduce((stats, user) => {
+        const newStats = { ...stats };
+        const userStats = parsed.stats[user];
+        newStats.subscribed += userStats.subscribed;
+        newStats.used += userStats.used;
+        return newStats;
+      }, { subscribed: 0, used: 0 });
+    } else {
+      parsed.stats = parsed && parsed.stats && parsed.stats[userId];
+    }
     return parsed;
   },
 });

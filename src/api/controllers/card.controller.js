@@ -32,8 +32,9 @@ exports.load = async (req, res, next, id) => {
  */
 exports.list = async (req, res, next) => {
   try {
-    const cards = await Card.list(req.query, req.loggedUser._id);
-    const transformedCards = cards.map(card => card.parseFields());
+    const currentUser = req.loggedUser;
+    const cards = await Card.list(req.query, currentUser._id);
+    const transformedCards = cards.map(card => card.parseFields(currentUser.id));
     res.json(transformedCards);
   } catch (error) {
     next(error);
@@ -46,11 +47,12 @@ exports.list = async (req, res, next) => {
  */
 exports.get = async (req, res, next) => {
   try {
-    const card = await Card.getOne(req.currentCard._id, req.loggedUser._id);
+    const currentUser = req.loggedUser;
+    const card = await Card.getOne(req.currentCard._id, currentUser._id);
     if (!card) {
       throw notAllowedError;
     }
-    const transformedCard = card.parseFields();
+    const transformedCard = card.parseFields(currentUser.id);
     res.json(transformedCard);
   } catch (error) {
     if (error === notAllowedError) {
