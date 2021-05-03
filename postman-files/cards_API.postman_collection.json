@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "d36acd5a-8c24-4a0e-bbac-aac116e3b04d",
+		"name": "cards API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "cards",
+			"item": [
+				{
+					"name": "{cards id}",
+					"item": [
+						{
+							"name": "edit card",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Publised card edited",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "published",
+											"type": "text"
+										},
+										{
+											"key": "imagePath",
+											"value": "https://static.streamloots.com/b355d1ef-d931-4c16-a48f-8bed0076401b/landing/ill-char-streamer_sing_star2x.png",
+											"type": "text"
+										},
+										{
+											"key": "rarity",
+											"value": "standard",
+											"type": "text"
+										},
+										{
+											"key": "limit",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}{{apiVersion}}/cards/:idCard",
+									"host": [
+										"{{baseUrl}}{{apiVersion}}"
+									],
+									"path": [
+										"cards",
+										":idCard"
+									],
+									"variable": [
+										{
+											"key": "idCard",
+											"value": "608ef35d24bcd8fcb6c548a0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get card",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{baseUrl}}{{apiVersion}}/cards/:idCard",
+									"host": [
+										"{{baseUrl}}{{apiVersion}}"
+									],
+									"path": [
+										"cards",
+										":idCard"
+									],
+									"variable": [
+										{
+											"key": "idCard",
+											"value": "608f0e67bcb6ad025d5fa318"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "cards list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var responseObject = JSON.parse(responseBody);",
+									"responseObject.cards",
+									"pm.test(\"cards is an array\", function () {",
+									"    responseObject.cards",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "card 1",
+									"description": "Card Name",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "draft",
+									"description": "Card status [draft, published, removed]",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "img",
+									"value": "https://static.streamloots.com/b355d1ef-d931-4c16-a48f-8bed0076401b/landing/ill-char-streamer_sing_star2x.png",
+									"description": "Card image",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "rarity",
+									"value": "",
+									"description": "Card rarity ¿number?",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "0",
+									"description": "Card limit (0 === no limmits)",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}{{apiVersion}}/cards",
+							"host": [
+								"{{baseUrl}}{{apiVersion}}"
+							],
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "publish card",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}{{apiVersion}}/card/publish",
+							"host": [
+								"{{baseUrl}}{{apiVersion}}"
+							],
+							"path": [
+								"card",
+								"publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subscribe card",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cardIds",
+									"value": "[\"608f379b0088700f1e0442f6\",\"608f379b0088700f1e0442f6\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}{{apiVersion}}/card/subscribe",
+							"host": [
+								"{{baseUrl}}{{apiVersion}}"
+							],
+							"path": [
+								"card",
+								"subscribe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "use card",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}{{apiVersion}}/card/use",
+							"host": [
+								"{{baseUrl}}{{apiVersion}}"
+							],
+							"path": [
+								"card",
+								"use"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "card2",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "draft",
+									"type": "text"
+								},
+								{
+									"key": "imagePath",
+									"value": "https://static.streamloots.com/b355d1ef-d931-4c16-a48f-8bed0076401b/landing/ill-char-streamer_sing_star2x.png",
+									"type": "text"
+								},
+								{
+									"key": "rarity",
+									"value": "standard",
+									"type": "text"
+								},
+								{
+									"key": "limit",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}{{apiVersion}}/cards",
+							"host": [
+								"{{baseUrl}}{{apiVersion}}"
+							],
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "123456789",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}{{apiVersion}}/status",
+					"host": [
+						"{{baseUrl}}{{apiVersion}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "123456789",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}{{apiVersion}}/users",
+					"host": [
+						"{{baseUrl}}{{apiVersion}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
